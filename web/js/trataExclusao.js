@@ -3,8 +3,9 @@
 $(function () {
     $("a").click(function (e) {
         e.preventDefault();
-        if (e.target["id"] === "deleteAluno" || e.target["id"] === "deleteCurso") {
-            const objDeletado = (e.target["id"] === "deleteAluno") ? 'aluno' : 'curso';
+        if (e.target["id"] === "deleteAluno" || e.target["id"] === "deleteCurso" || e.target["id"] === "deleteUsuario") {
+            const objDeletado = (e.target["id"] === "deleteUsuario") ? 'usuário' 
+                : (e.target["id"] === "deleteAluno") ? 'aluno' : 'curso';
             bootbox.confirm({
                 centerVertical: true,
                 title: 'Deletar?',

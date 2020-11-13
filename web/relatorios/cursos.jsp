@@ -32,8 +32,8 @@
         <script src="../js/trataExclusao.js"></script>
         <script>
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         </script>
 
         <div class="mt-5">

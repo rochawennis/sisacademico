@@ -1,7 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.sisacademico.servlets;
 
 import br.sisacademico.DAO.UsuarioDAO;
-import br.sisacademico.security.Usuario;
+import br.sisacademico.security.TipoUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -13,9 +18,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-public class processaLogin extends HttpServlet {
+/**
+ *
+ * @author thiagograzianitraue
+ */
+public class usuarioServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,43 +38,39 @@ public class processaLogin extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            String tipoAcao = request.getParameter("tipoAcao");
 
-            String email, senha;
-            email = request.getParameter("email");
-            senha = request.getParameter("senha");
-
-            UsuarioDAO uDAO = new UsuarioDAO();
-            
-            //criptografia da senha 
-            MessageDigest m = MessageDigest.getInstance("SHA-256");
-            m.update(senha.getBytes(), 0, senha.length());
-
-            Usuario u = uDAO.autentica(email, new BigInteger(1,m.digest()).toString(16));
-
-            HttpSession session = request.getSession();
-
-            if (u != null) { //autenticou
-                session.setAttribute("autenticado", true);
-                session.setAttribute("idUsuario", u.getIdUsuario());
-                session.setAttribute("emailUsuario", u.getEmail());
-                session.setAttribute("tipoUsuario", u.getTipo());
-                response.sendRedirect("home.jsp");
-                
-            } else {
-                session.setAttribute("autenticado", false);
-                response.sendRedirect("index.jsp");
-
-                /*
-                paramos aqui
-                falta: 
-                    1 - Criptografar a senha - FEITO
-                    2 - Criar mecanismo de proteção das páginas - FEITO
-                    3 - Criar mecanismo de logoff - FEITO
-                    4 - Tratar as funções a depender do tipo de usuário
-                 */
+            if (tipoAcao.equals("delete")) {
+                UsuarioDAO uDAO = new UsuarioDAO();
+                int idUsuarioDeletado = Integer.parseInt(request.getParameter("idUsuario"));
+                //out.print("Vou deletar o usuário " + idUsuarioDeletado);
+                if (uDAO.deletarUsuario(idUsuarioDeletado)) {
+                    response.sendRedirect("gestaousuarios.jsp?acao=true");
+                } else {
+                    response.sendRedirect("gestaousuarios.jsp?acao=true");
+                }
             }
+
+            if (tipoAcao.equals("insere")) {
+                String email = request.getParameter("email");
+                String senha = request.getParameter("senha");
+
+                //criptografia da senha 
+                MessageDigest m = MessageDigest.getInstance("SHA-256");
+                m.update(senha.getBytes(), 0, senha.length());
+
+                int idTipo = Integer.parseInt(request.getParameter("idTipoUsuario"));
+                TipoUsuario tipo = idTipo == 1 ? TipoUsuario.admin : TipoUsuario.usuario;
+                UsuarioDAO uDAO = new UsuarioDAO();
+                if (uDAO.cadastrarUsuario(email, new BigInteger(1,m.digest()).toString(16), tipo)) {
+                    response.sendRedirect("gestaousuarios.jsp?acao=true");
+                } else {
+                    response.sendRedirect("gestaousuarios.jsp?acao=false");
+                }
+            }
+
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(processaLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(usuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

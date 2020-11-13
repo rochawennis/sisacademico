@@ -12,6 +12,10 @@
         <servlet-name>processaLogin</servlet-name>
         <servlet-class>br.sisacademico.servlets.processaLogin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>usuarioServlet</servlet-name>
+        <servlet-class>br.sisacademico.servlets.usuarioServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>cursoServlet</servlet-name>
         <url-pattern>/cursoServlet</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>processaLogin</servlet-name>
         <url-pattern>/processaLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>usuarioServlet</servlet-name>
+        <url-pattern>/usuarioServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -74,4 +74,44 @@ public class UsuarioDAO {
 
         return usuarios;
     }
+
+    public boolean deletarUsuario(int idUsuario) {
+        try {
+            String query = "DELETE FROM \"tb_usuario\" WHERE \"idUsuario\" = ?";
+
+            PreparedStatement stm = ConnectionFactory.getConnection().prepareStatement(query);
+
+            stm.setInt(1, idUsuario);
+
+            stm.execute();
+
+            stm.getConnection().close();
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean cadastrarUsuario(String email, String senha, TipoUsuario tipo){
+        try {
+            String query = "INSERT INTO \"tb_usuario\" (\"email\", \"senha\", \"idTipoUsuario\") VALUES(?, ?, ?)";
+
+            PreparedStatement stm = ConnectionFactory.getConnection().prepareStatement(query);
+
+            stm.setString(1, email);
+            stm.setString(2, senha);
+            stm.setInt(3, tipo == TipoUsuario.admin ? 1 : 2);
+
+            stm.execute();
+
+            stm.getConnection().close();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

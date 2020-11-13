@@ -20,6 +20,8 @@
         response.sendRedirect("404.jsp");
     }
 
+    int idUSuarioLogado = (Integer) session.getAttribute("idUsuario");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -29,15 +31,35 @@
     </head>
     <body>
         <jsp:include page="menu.jsp"/>
-        <%            
-            UsuarioDAO uDAO = new UsuarioDAO();
+
+        <%            if (request.getParameter("acao") != null) {
+                if (Boolean.parseBoolean(request.getParameter("acao"))) {
+        %>
+        <div class="text-center alert alert-success" style="margin: 0 auto !important; margin-top:  30px;">Ação realizada com sucesso!</div>
+        <%
+        } else {
+        %>
+        <div class="text-center alert alert-danger" style="margin: 0 auto !important; margin-top:  30px;">Erro ao realizar a operação!</div>
+        <%
+                }
+            }
+        %>
+
+        <script src="../js/trataExclusao.js"></script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <%            UsuarioDAO uDAO = new UsuarioDAO();
             ArrayList<Usuario> usuarios = uDAO.getUsuarios();
             int count = 1;
         %>
 
-        <script src="../js/trataExclusao.js"></script>
-        <div class="mt-5">
+        <script src="js/trataExclusao.js"></script>
+        <div class="mt-4">
             <div style="width: 90%; margin: 0 auto !important;">
+                <a href="cadastros/usuario.jsp" class="btn btn-outline-success">Novo usuário</a>
                 <table class="table table-bordered text-center">
                     <thead class="thead-dark">
                         <tr>
@@ -49,21 +71,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for (Usuario u : usuarios) { %>
+                        <% for (Usuario u : usuarios) {%>
                         <tr>
                             <td><%=count++%></td>
                             <td><%=u.getEmail()%></td>
-                            <td><%= (u.getTipo() == TipoUsuario.admin) ? "Administrador" : "Usuário comum" %></td>
+                            <td><%= (u.getTipo() == TipoUsuario.admin) ? "Administrador" : "Usuário comum"%></td>
                             <td>BOTÃO EDITAR</td>
-                            <td>botão excluir</td>
+                            <%
+                                if (u.getIdUsuario() == idUSuarioLogado) {
+                            %>
+                            <td>
+                                <span data-toggle="tooltip" title="Você não pode se deletar!">
+                                    <button class="btn btn-secondary btn-outline-secondary" disabled style="pointer-events: none;" type="button" disabled>Apagar</button>
+                                </span>
+                            </td>
+                            <%
+                            } else {
+                            %>
+                            <td><a href="usuarioServlet?tipoAcao=delete&idUsuario=<%=u.getIdUsuario()%>" class="btn btn-outline-danger" id="deleteUsuario">Apagar</a></td>
+                            <% } %>
                         </tr>
                         <% }%>
                     </tbody>
                 </table>
             </div>
         </div>
-
-
-
     </body>
 </html>
