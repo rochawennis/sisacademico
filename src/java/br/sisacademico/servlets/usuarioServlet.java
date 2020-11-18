@@ -62,15 +62,28 @@ public class usuarioServlet extends HttpServlet {
                 int idTipo = Integer.parseInt(request.getParameter("idTipoUsuario"));
                 TipoUsuario tipo = idTipo == 1 ? TipoUsuario.admin : TipoUsuario.usuario;
                 UsuarioDAO uDAO = new UsuarioDAO();
-                if (uDAO.cadastrarUsuario(email, new BigInteger(1,m.digest()).toString(16), tipo)) {
+                if (uDAO.cadastrarUsuario(email, new BigInteger(1, m.digest()).toString(16), tipo)) {
                     response.sendRedirect("gestaousuarios.jsp?acao=true");
                 } else {
                     response.sendRedirect("gestaousuarios.jsp?acao=false");
                 }
             }
 
+            if (tipoAcao.equals("edicao")) {
+                String email = request.getParameter("email");
+                String senha = request.getParameter("senha");
+                String checkSenha = request.getParameter("alteraSenha");
+                boolean alteraSenha =false;
+                if (checkSenha != null)
+                   alteraSenha = checkSenha.equals("on");
+      
+                //int i = 0;
+            }
+
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(usuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

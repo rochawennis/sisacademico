@@ -75,6 +75,39 @@ public class UsuarioDAO {
         return usuarios;
     }
 
+    public Usuario getUsuario(int idUsuario) {
+        Usuario u = new Usuario();
+
+        try {
+            stm = ConnectionFactory.getConnection().createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+
+            String select = "SELECT \"idUsuario\", \"email\", \"tipo\" "
+                    + "FROM \"tb_usuario\""
+                    + "    INNER JOIN \"tb_tipoUsuario\" ON \"idTipoUsuario\" = \"idTipo\" "
+                    + "WHERE \"idUsuario\" = " + idUsuario;
+
+            ResultSet resultados = stm.executeQuery(select);
+
+            while (resultados.next()) {
+                u.setIdUsuario(resultados.getInt("idUsuario"));
+                u.setEmail(resultados.getString("email"));
+
+                u.setTipo(resultados.getString("tipo").equalsIgnoreCase("admin")
+                        ? TipoUsuario.admin
+                        : TipoUsuario.usuario);
+            }
+
+            stm.getConnection().close();
+
+            return u;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean deletarUsuario(int idUsuario) {
         try {
             String query = "DELETE FROM \"tb_usuario\" WHERE \"idUsuario\" = ?";
@@ -93,8 +126,8 @@ public class UsuarioDAO {
             return false;
         }
     }
-    
-    public boolean cadastrarUsuario(String email, String senha, TipoUsuario tipo){
+
+    public boolean cadastrarUsuario(String email, String senha, TipoUsuario tipo) {
         try {
             String query = "INSERT INTO \"tb_usuario\" (\"email\", \"senha\", \"idTipoUsuario\") VALUES(?, ?, ?)";
 

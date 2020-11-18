@@ -76,7 +76,7 @@
                             <td><%=count++%></td>
                             <td><%=u.getEmail()%></td>
                             <td><%= (u.getTipo() == TipoUsuario.admin) ? "Administrador" : "Usuário comum"%></td>
-                            <td>BOTÃO EDITAR</td>
+                            <td><a href="cadastros/usuario.jsp?idUsuario=<%=u.getIdUsuario()%>" class="btn btn-outline-info">Editar</a></td>
                             <%
                                 if (u.getIdUsuario() == idUSuarioLogado) {
                             %>
