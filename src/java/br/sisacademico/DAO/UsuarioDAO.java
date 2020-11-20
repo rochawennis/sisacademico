@@ -147,4 +147,39 @@ public class UsuarioDAO {
             return false;
         }
     }
+
+    public boolean atualizaUsuario(int idUsuario, String emailNovo, String senhaNova, TipoUsuario tipoNovo, boolean alteraSenha) {
+        try {
+            String query = "";
+
+            PreparedStatement stm;
+
+            if (alteraSenha) {
+                query = "UPDATE \"tb_usuario\" SET \"email\" = ?, \"senha\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
+                stm = ConnectionFactory.getConnection().prepareStatement(query);
+                stm.setString(1, emailNovo);
+                stm.setString(2, senhaNova);
+                stm.setInt(3, tipoNovo == TipoUsuario.admin ? 1 : 2);
+                stm.setInt(4, idUsuario);
+
+            } else {
+                query = "UPDATE \"tb_usuario\" SET \"email\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
+                stm = ConnectionFactory.getConnection().prepareStatement(query);
+                stm.setString(1, emailNovo);
+                stm.setInt(2, tipoNovo == TipoUsuario.admin ? 1 : 2);
+                stm.setInt(3, idUsuario);
+
+            }
+
+            stm.execute();
+
+            stm.getConnection().close();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

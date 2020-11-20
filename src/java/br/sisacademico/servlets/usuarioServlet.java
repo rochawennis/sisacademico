@@ -73,16 +73,33 @@ public class usuarioServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String senha = request.getParameter("senha");
                 String checkSenha = request.getParameter("alteraSenha");
-                boolean alteraSenha =false;
-                if (checkSenha != null)
-                   alteraSenha = checkSenha.equals("on");
-      
-                //int i = 0;
+                int idTipoNovo = Integer.parseInt(request.getParameter("idTipoUsuario"));
+                TipoUsuario t = idTipoNovo == 1 ? TipoUsuario.admin : TipoUsuario.usuario;
+                int idUsuario = Integer.parseInt(request.getParameter("idTipoUsuario"));
+                boolean alteraSenha = false;
+                if (checkSenha != null) {
+                    alteraSenha = checkSenha.equals("on");
+                }
+
+                String senhaCripto = "";
+
+                if (alteraSenha) {
+                    MessageDigest m = MessageDigest.getInstance("SHA-256");
+                    m.update(senha.getBytes(), 0, senha.length());
+                    senhaCripto = new BigInteger(1, m.digest()).toString(16);
+                }
+
+                UsuarioDAO uDAO = new UsuarioDAO();
+                if (uDAO.atualizaUsuario(idUsuario, email, senhaCripto, t, alteraSenha)) {
+                    response.sendRedirect("gestaousuarios.jsp?acao=true");
+                }
+                response.sendRedirect("gestaousuarios.jsp?acao=false");
+
             }
 
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(usuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
