@@ -97,12 +97,14 @@ public class UsuarioDAO {
                 u.setTipo(resultados.getString("tipo").equalsIgnoreCase("admin")
                         ? TipoUsuario.admin
                         : TipoUsuario.usuario);
+
             }
 
             stm.getConnection().close();
 
             return u;
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
@@ -151,20 +153,20 @@ public class UsuarioDAO {
     public boolean atualizaUsuario(int idUsuario, String emailNovo, String senhaNova, TipoUsuario tipoNovo, boolean alteraSenha) {
         try {
             String query = "";
-
             PreparedStatement stm;
-
             if (alteraSenha) {
-                query = "UPDATE \"tb_usuario\" SET \"email\" = ?, \"senha\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
+                query = "UPDATE UNINOVE.\"tb_usuario\" SET \"email\" = ?, \"senha\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
                 stm = ConnectionFactory.getConnection().prepareStatement(query);
+
                 stm.setString(1, emailNovo);
                 stm.setString(2, senhaNova);
                 stm.setInt(3, tipoNovo == TipoUsuario.admin ? 1 : 2);
                 stm.setInt(4, idUsuario);
 
             } else {
-                query = "UPDATE \"tb_usuario\" SET \"email\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
+                query = "UPDATE UNINOVE.\"tb_usuario\" SET \"email\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
                 stm = ConnectionFactory.getConnection().prepareStatement(query);
+
                 stm.setString(1, emailNovo);
                 stm.setInt(2, tipoNovo == TipoUsuario.admin ? 1 : 2);
                 stm.setInt(3, idUsuario);

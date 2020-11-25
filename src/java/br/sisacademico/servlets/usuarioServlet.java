@@ -73,16 +73,18 @@ public class usuarioServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String senha = request.getParameter("senha");
                 String checkSenha = request.getParameter("alteraSenha");
+                
                 int idTipoNovo = Integer.parseInt(request.getParameter("idTipoUsuario"));
                 TipoUsuario t = idTipoNovo == 1 ? TipoUsuario.admin : TipoUsuario.usuario;
-                int idUsuario = Integer.parseInt(request.getParameter("idTipoUsuario"));
+                
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
                 boolean alteraSenha = false;
                 if (checkSenha != null) {
                     alteraSenha = checkSenha.equals("on");
                 }
 
+                //criptografia da senha 
                 String senhaCripto = "";
-
                 if (alteraSenha) {
                     MessageDigest m = MessageDigest.getInstance("SHA-256");
                     m.update(senha.getBytes(), 0, senha.length());
@@ -92,9 +94,9 @@ public class usuarioServlet extends HttpServlet {
                 UsuarioDAO uDAO = new UsuarioDAO();
                 if (uDAO.atualizaUsuario(idUsuario, email, senhaCripto, t, alteraSenha)) {
                     response.sendRedirect("gestaousuarios.jsp?acao=true");
+                } else {
+                    response.sendRedirect("gestaousuarios.jsp?acao=false");
                 }
-                response.sendRedirect("gestaousuarios.jsp?acao=false");
-
             }
 
         } catch (NoSuchAlgorithmException ex) {

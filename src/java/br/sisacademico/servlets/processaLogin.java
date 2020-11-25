@@ -54,15 +54,6 @@ public class processaLogin extends HttpServlet {
             } else {
                 session.setAttribute("autenticado", false);
                 response.sendRedirect("index.jsp");
-
-                /*
-                paramos aqui
-                falta: 
-                    1 - Criptografar a senha - FEITO
-                    2 - Criar mecanismo de proteção das páginas - FEITO
-                    3 - Criar mecanismo de logoff - FEITO
-                    4 - Tratar as funções a depender do tipo de usuário
-                 */
             }
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(processaLogin.class.getName()).log(Level.SEVERE, null, ex);

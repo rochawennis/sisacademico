@@ -51,7 +51,8 @@
                 $('[data-toggle="tooltip"]').tooltip();
             });
         </script>
-        <%            UsuarioDAO uDAO = new UsuarioDAO();
+        <%            
+            UsuarioDAO uDAO = new UsuarioDAO();
             ArrayList<Usuario> usuarios = uDAO.getUsuarios();
             int count = 1;
         %>
@@ -76,7 +77,7 @@
                             <td><%=count++%></td>
                             <td><%=u.getEmail()%></td>
                             <td><%= (u.getTipo() == TipoUsuario.admin) ? "Administrador" : "Usuário comum"%></td>
-                            <td><a href="cadastros/usuario.jsp?idUsuario=<%=u.getIdUsuario()%>" class="btn btn-outline-info">Editar</a></td>
+                            <td><a href="cadastros/usuario.jsp?idUsuario=<%=u.getIdUsuario()%>" class="btn btn btn-outline-info">Editar</a></td>
                             <%
                                 if (u.getIdUsuario() == idUSuarioLogado) {
                             %>

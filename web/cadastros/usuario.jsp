@@ -15,13 +15,13 @@
     } else {
         response.sendRedirect(request.getContextPath() + "/index.jsp?acesso=false");
     }
- 
+
     boolean acessoFull = (TipoUsuario) session.getAttribute("tipoUsuario")
             == TipoUsuario.admin ? true : false;
     if (!acessoFull) {
         response.sendRedirect("../404.jsp");
     }
- 
+
     //-------------
     String tipoAcao = "insere";
     String labelBotao = "Cadastrar";
@@ -60,7 +60,7 @@
                                placeholder="E-Mail do usuário"
                                value="<%=u.getEmail()%>"/>
                     </div>
- 
+
                     <div class="form-group" style="padding-top: 25px;">
                         <label>Senha</label>
                         <input type="password" <%= (campoSenhaHabilitado == false) ? "disabled" : "" %> name="senha" id="textBox" class="form-control"
@@ -70,7 +70,7 @@
                         Alterar a senha do usuário
                         </input>
                         <% } %>
- 
+
                     </div>
                     <div class="form-group">
                         <label>Selecione o tipo de acesso</label>
