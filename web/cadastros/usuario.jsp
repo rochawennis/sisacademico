@@ -28,6 +28,7 @@
     Usuario u = new Usuario();
     u.setEmail("");
     u.setTipo(TipoUsuario.usuario);
+    String desabilitado = "";
     boolean campoSenhaHabilitado = true;
     if (request.getParameter("idUsuario") != null) {
         int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
@@ -36,7 +37,12 @@
         tipoAcao = "edicao";
         labelBotao = "Confirmar alterações";
         campoSenhaHabilitado = false;
+        int idUsuarioLogado = (Integer) session.getAttribute("idUsuario");
+
+        desabilitado = (idUsuarioLogado == idUsuario) ? "disabled" : "";
+
     }
+
 %>
 <!DOCTYPE html>
 <html>
@@ -63,18 +69,18 @@
 
                     <div class="form-group" style="padding-top: 25px;">
                         <label>Senha</label>
-                        <input type="password" <%= (campoSenhaHabilitado == false) ? "disabled" : "" %> name="senha" id="textBox" class="form-control"
+                        <input type="password" <%= (campoSenhaHabilitado == false) ? "disabled" : ""%> name="senha" id="textBox" class="form-control"
                                value=""/>
-                        <% if(!campoSenhaHabilitado) { %>
+                        <% if (!campoSenhaHabilitado) { %>
                         <input type="checkbox" name="alteraSenha" id="checkBox" onclick="enableDisable(this.checked, 'textBox')">
                         Alterar a senha do usuário
                         </input>
-                        <% } %>
+                        <% }%>
 
                     </div>
                     <div class="form-group">
                         <label>Selecione o tipo de acesso</label>
-                        <select name="idTipoUsuario" class="form-control">
+                        <select name="idTipoUsuario" class="form-control" <%=desabilitado%>>
                             <option value="1" <%=(u.getTipo() == TipoUsuario.admin) ? "selected" : ""%> >Administrador</option>
                             <option value="2" <%=(u.getTipo() == TipoUsuario.usuario) ? "selected" : ""%>>Usuário comum</option>
                         </select>

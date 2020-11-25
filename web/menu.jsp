@@ -1,6 +1,5 @@
 <%@page import="br.sisacademico.security.TipoUsuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,12 +44,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<%=request.getContextPath()%>/gestaousuarios.jsp">Gestão de usuários</a>
                     </li>
-
                     <% }%>
                 </ul>
-                <span class="navbar-text nav-item active"><%=session.getAttribute("emailUsuario")%></span>
                 <span class="navbar-text nav-item active">
-                    <a class="nav-item nav-link" href="<%=request.getContextPath()%>/logoff.jsp">Sair</a>
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%=session.getAttribute("emailUsuario")%></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item text-dark" href="<%=request.getContextPath()%>/cadastros/alterarsenha.jsp">Alterar senha</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-dark" href="<%=request.getContextPath()%>/logoff.jsp">Sair</a>
+                        </div>
+                    </div>
                 </span>
             </div>
         </nav>

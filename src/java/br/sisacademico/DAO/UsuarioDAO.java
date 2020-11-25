@@ -155,7 +155,7 @@ public class UsuarioDAO {
             String query = "";
             PreparedStatement stm;
             if (alteraSenha) {
-                query = "UPDATE UNINOVE.\"tb_usuario\" SET \"email\" = ?, \"senha\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
+                query = "UPDATE \"tb_usuario\" SET \"email\" = ?, \"senha\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
                 stm = ConnectionFactory.getConnection().prepareStatement(query);
 
                 stm.setString(1, emailNovo);
@@ -164,7 +164,7 @@ public class UsuarioDAO {
                 stm.setInt(4, idUsuario);
 
             } else {
-                query = "UPDATE UNINOVE.\"tb_usuario\" SET \"email\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
+                query = "UPDATE \"tb_usuario\" SET \"email\" = ?, \"idTipoUsuario\" = ? WHERE \"idUsuario\" = ?";
                 stm = ConnectionFactory.getConnection().prepareStatement(query);
 
                 stm.setString(1, emailNovo);
