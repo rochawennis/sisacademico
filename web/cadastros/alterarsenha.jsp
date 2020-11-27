@@ -9,12 +9,6 @@
         response.sendRedirect(request.getContextPath() + "/index.jsp?acesso=false");
     }
 
-    boolean acessoFull = (TipoUsuario) session.getAttribute("tipoUsuario")
-            == TipoUsuario.admin ? true : false;
-    if (!acessoFull) {
-        response.sendRedirect("../404.jsp");
-    }
-
     String acao = "alteraSenha";
 %>
 <!DOCTYPE html>
@@ -25,7 +19,8 @@
     </head>
     <body>
         <jsp:include page="../menu.jsp"/>
-                <%            if (request.getParameter("acao") != null) {
+        <script src="../js/validaSenha.js"></script>
+        <%            if (request.getParameter("acao") != null) {
                 if (Boolean.parseBoolean(request.getParameter("acao"))) {
         %>
         <div class="text-center alert alert-success" style="margin: 0 auto !important; margin-top:  30px;">Senha auterada!</div>
@@ -45,19 +40,19 @@
                         <label>Senha Atual: </label>
                         <input type="password" name="senhaAntiga" id="textBox" class="form-control"/>
                     </div>
-                    
-                       <div class="form-group" style="padding-top: 25px;">
+
+                    <div class="form-group" style="padding-top: 25px;">
                         <label>Senha nova: </label>
-                        <input type="password" name="senhaNova_1" id="textBox" class="form-control"/>
+                        <input type="password" name="senhaNova_1" id="senha" class="form-control"/>
                     </div>
-                    
-                       <div class="form-group" style="padding-top: 25px;">
+
+                    <div class="form-group" style="padding-top: 25px;">
                         <label>Confirme: </label>
-                        <input type="password" name="senhaNova_2" id="textBox" class="form-control"/>
+                        <input type="password" name="senhaNova_2" id="senha_confirm" class="form-control"/>
                     </div>
 
                     <input type="hidden" name="tipoAcao" value="<%=acao%>"/>  
-                    
+
                     <input type="button" value="Alterar" class="btn btn-outline-info btn-block">
                 </form>
             </div>

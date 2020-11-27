@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.sisacademico.servlets;
 
 import br.sisacademico.DAO.UsuarioDAO;
@@ -20,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author thiagograzianitraue
- */
+
 public class usuarioServlet extends HttpServlet {
 
     /**
@@ -101,6 +94,7 @@ public class usuarioServlet extends HttpServlet {
             }
 
             if (tipoAcao.equals("alteraSenha")) {
+                
                 HttpSession session = request.getSession();
 
                 String email = (String) session.getAttribute("emailUsuario");
